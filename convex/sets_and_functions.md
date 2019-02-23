@@ -1,5 +1,7 @@
 # 凸集与凸函数
 
+> 主要内容包括: 凸集与凸函数的定义、性质、运算操作和例子，softmax函数是凸函数。
+
 ## 凸集
 
 ### 定义
@@ -104,7 +106,7 @@ $$
 
 ### 定义
 
-凸函数: $$ f : {\cal R^n } \rightarrow {\cal R}$$是凸函数如果$${\mit dom(f)} \subseteq {\cal R^n } 是凸的,且f(tx + (1-t)y) \ leq tf(x) + (1-t)f(y), 其中 0 \leq t \leq 1.$$
+凸函数: $$ f : {\cal R^n } \rightarrow {\cal R}$$是凸函数如果$${\mit dom(f)} \subseteq {\cal R^n } 是凸的,且f(tx + (1-t)y) \leq tf(x) + (1-t)f(y), 其中 0 \leq t \leq 1.$$
 
 ![凸函数](../images/convexfunction.png)
 
@@ -153,6 +155,8 @@ $$
 
 **First-order characterization**:如果f是可微的，那么f的凸函数当且仅当dom(f)是凸的，且$$f(y) \geq f(x) + \nabla f(x)^T(yx)\ for\ all\ x,y \in dom(f)$$。也就是说，**f必须在它的切线超平面上方**。因此，对于一个可微的f, x最小化f当且仅当$$\nabla f(x) = 0$$。
 
+![一阶条件](../images/first_order_condition.png)
+
 **Second-order characterization**:如果f是二次可微的，那么f是凸函数当且dom(f)是凸集。而且它的**Hessian矩阵**$$\nabla^2 f(x) \geq 0\ for\ all\ x\ \in dom(f)$$。
 
 **Jensens inequality**:如果f是凸函数，而且X是f的定义域上的一个随机变量，则$$f(E[X]) \geq E[f(X)]$$。
@@ -160,5 +164,58 @@ $$
 ### 保存凸函数性质的操作
 
 - 非负的线性组合
-- pointwise maximization
-- partial minimization
+
+- pointwise maximization：定义一个新的函数f(x)在x的值为有限可数的凸函数在x处的最大值，则f为凸函数，这意味着我们总能以逐点的方式最大化一系列函数。
+
+- partial minimization：如果$$g(x, y)$$在x, y上是凸函数，而且C是一个凸集，那么在凸集C上的任意变量上局部最小化函数也是凸函数，如$$f(x)=min_{y \in C} g(x,y) 和 f(y) = min_{x \in C} g(x,y)$$
+
+- 仿射组合：如果f是凸函数，那么$$g(x)=f(Ax+b)$$也是凸函数。
+
+- General composition:$$f(x)=h(g(x))$$是凸函数当：外层函数h：$$R \rightarrow R$$是单调的，且内层函数g:$$R^n \rightarrow R$$是凹函数或者凸函数。
+  - f是凸函数，如果h是凸函数且不单减，g是凸函数
+  - f是凸函数，如果h是凸函数且不单增，g是凹函数
+  - f是凹函数，如果h是凸函数且不单减，g是凹函数
+  - f是凸函数，如果h是凸函数且不单增，g是凹函数
+
+- 向量组合：与general composition相似，不过是逐点的形式。
+
+### 例子：Softmax函数
+
+Log-sum-exp（LSM）函数是：
+$$
+g(x) = \log(\sum_{i=1}^k exp(a_i^Tx + b_i))
+$$
+对于固定的$$a_i和b_i$$。
+
+Log-sum-exp是凸函数，是严格单调递增的函数，但是并不是具有**严格凸性质**的。log-sum-exp可以选出平滑的最大值，利用切线逼近$$\log(X+a) \approx \log X +a/X$$，如果某一项$$x_j$$比其他的所有项都大：
+$$
+LSE(x) = \log(\sum_i exp\ x_j) \approx \log(exp\ x_j) + (\sum_{i \neq j} exp\ x_i)/exp\ x_j \approx x_j = max_i\ x_i
+$$
+
+$$x = (x_1, \cdots, x_n)$$，则偏导数是：
+$$
+\frac{\partial}{\partial x_i} LSE(x) = \frac{exp\ x_j}{\sum_j exp\ x_j}
+$$
+用梯度表示偏导数作为向量，可以得到**softmax函数**，一个在机器学习中被广为应用的函数。
+
+话说回来，为什么log-sum-exp是凸函数呢？
+
+由于仿射组合会保存凸性质，所有只要证明$$f(x) = \log(\sum_{i=1}^k exp(x_i))$$是凸函数就可以了。通过f(x)的二阶性质我们可以证明其凸性质:
+$$
+\nabla_i f(x) = \frac{e^{x_i}}{\sum_{l=1}^n e^{x_l}}
+$$
+
+$$
+\nabla_{ij}^2 f(x) = \frac{e^{x_i}}{\sum_{l=1}^n e^{x_l}}1\{i=j\} - \frac{e^{x_i}e^{x_j}}{(\sum_{l=1}^n e^{x_l})^2}
+$$
+（我也不知道这个二阶导是怎么求的。数学堪忧。。）
+
+重写前一个公式有$$\nabla^2 f(x)= diag(z) - zz^T$$，其中$$z_i = e^{x_i}/(\sum_{l=1}^n e^{x_l})$$，这个矩阵是**严格对角占优**的，所以是正半定的（p.s.d）,根据凸函数的二阶性质，f(x)是凸的。
+
+### 例子：函数$$max\{\log \big (\frac{1}{(a^Tx+b)^7}\big ), \left\|Ax+b\right\|_1^5\}$$是凸函数吗？
+
+在这个课程中，还讲了这样一个例子，上述函数是凸函数吗？
+
+答案是是凸函数，它可以通过凸函数的性质与保存凸函数性质的操作得到。
+
+
