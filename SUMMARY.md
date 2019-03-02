@@ -7,3 +7,5 @@
 * [Convexity I - sets and functions](./convex/sets_and_functions.md)
 
 * [Convexity II - optimization basics](./convex/optimization_basics.md)
+
+* [Canonical Problem Forms](./convex/canonical_probs.md)

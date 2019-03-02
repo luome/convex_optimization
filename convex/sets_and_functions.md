@@ -129,17 +129,26 @@ $$
 
 - 单变量函数
  * 指数函数
- * 幂函数($$\begin{eqnarray}x^a = \begin{cases}
- convex, &a \geq 1 or\ a \leq 0\cr concave, &0 \leq a \leq 1\end{cases}
- \end{eqnarray}$$,在$${\cal R_+}上$$)
- * 对数函数（$$log x$$在$${\cal R_{++}}$$上是凹的。）
+ * 幂函数
+ $$
+ \begin{eqnarray}
+ x^a = \begin{cases}
+ convex, &a \geq 1\ or\ a \leq 0\cr concave, &0 \leq a \leq 1\end{cases}
+ \end{eqnarray},在{\cal R_+}上
+ $$
+ * 对数函数（$$\log x$$在$${\cal R_{++}}$$上是凹的。）
 - 仿射函数: $$a^Tx+b$$既是凹的也是凸的。
 - 二次函数: $$\frac{1}{2}x^TQx + b^Tx + c$$是凸函数如果$$Q \geq 0$$
 - 最小二乘损失：$$\left\|y-Ax\right\|_2^2$$总是凸函数，因为$$A^TA$$总是正半定的。
 - 范数$$\left\|x\right\|$$是凸函数（任何范数）
-- 指示函数（indicator function):如果C是凸集，那么它的指示函数$$\begin{eqnarray}I_C(x)=
-\begin{cases}
-0,&x \in C\cr \infty, &x \notin C \end{cases} \end{eqnarray}$$也是凸函数。
+- 指示函数（indicator function):如果C是凸集，那么它的指示函数
+$$
+\begin{eqnarray}
+I_C(x)=\begin{cases}
+0,&x \in C\cr \infty, &x \notin C \end{cases} 
+\end{eqnarray}
+$$
+也是凸函数。
 - 支撑函数（support function）：对于任意集合C(不论是否是凸集)，它的支撑函数$$i_C^*(x) = \underset{y \in C}{max}\ x^Ty$$是凸函数
 - 最大函数$$f(x) = max\{x_1, \cdots,x_n\}$$是凸函数。
 

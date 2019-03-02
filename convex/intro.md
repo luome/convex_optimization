@@ -81,6 +81,7 @@ $$
 
 $$f(x) \leq f(y) 对于所有可行y, \left \|x-y\right \|_2 \leq \rho
 $$
+
 $$那么对于所有所有可行y, f(x) \leq f(y).
 $$
 
